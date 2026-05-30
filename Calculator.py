@@ -1,31 +1,68 @@
-
-
-import tkinter
+import tkinter 
 
 button_values = [
-    ["AC", "+/-", "%", "/"],
-    ["7", "8", "9", "X"],
+    ["AC", "+/-", "%", "÷"], 
+    ["7", "8", "9", "×"], 
     ["4", "5", "6", "-"],
     ["1", "2", "3", "+"],
-    ["0", ".", ":)", "="],
+    ["0", ".", ":)", "="]
 ]
 
-right_symbols = ["/", "X", "-", "+", "="]
-top_symbols = ["AC", "+/-", "%" ]
+right_symbols = ["÷", "×", "-", "+", "="]
+top_symbols = ["AC", "+/-", "%"]
 
-row_count = len(button_values) 
-top_symbols = len(button_values[0])
+row_count = len(button_values)
+column_count = len(button_values[0])
 
-color_dark_blue = "#EF77B4"
+color_dark_blue = "#34336F"
 color_yellow = "#E4C023"
-color_light_blue = "#8CD2D3"
+color_white = "#EEEDED"
 color_gray = "#9F9E9F"
-color_white = "#F9FCFD"
-
-#I am colorblind :3
+color_black = "#000000"
 
 
 window = tkinter.Tk()
-window.title("Project Calculator")
+window.title("Calculator")
 window.resizable(False, False)
+
+frame = tkinter.Frame(window)
+label = tkinter.Label(frame, text="0", font=("Arial", 45), background=color_black,
+                      foreground=color_gray, anchor="e", width=column_count)
+
+label.grid(row=0, column=0, columnspan=column_count, sticky="we")
+
+for row in range(row_count):
+    for column in range(column_count):
+        value = button_values[row][column]
+        button = tkinter.Button(frame, text=value, font=("Arial", 30),
+                                width=column_count-1, height=1,
+                                command=lambda value=value: button_clicked(value))
+        
+        if value in top_symbols:
+            button.config(foreground=color_black, background=color_white)
+        elif value in right_symbols:
+            button.config(foreground=color_dark_blue, background=color_yellow)
+        else:
+            button.config(foreground=color_gray, background=color_dark_blue)
+        
+        button.grid(row=row+1, column=column)
+
+frame.pack()
+
+
+
+window.update()
+window_width = window.winfo_width()
+window_height = window.winfo_height()
+screen_width = window.winfo_screenwidth()
+screen_height = window.winfo_screenheight()
+
+window_x = int((screen_width/2) - (window_width/2))
+window_y = int((screen_height/2) - (window_height/2))
+
+
+window.geometry(f"{window_width}x{window_height}+{window_x}+{window_y}")
+
 window.mainloop()
+
+
